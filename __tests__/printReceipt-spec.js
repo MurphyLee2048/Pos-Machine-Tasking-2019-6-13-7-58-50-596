@@ -60,6 +60,15 @@ it('should return standard format when invoke beFormat given name and price and 
 
 it('should doCount', function () {
     const arr = ['0002', '0002'];
+
+    const count = printReceipt.doCount(arr);
+
+    expect(count).toStrictEqual([{item: "0002", count: 2}]);
+});
+
+it('should print a Receipt in the console ', function () {
+    // given
+    const arr = ['0001', '0002'];
     const datasource = [
         {"id": "0001", "name": "Coca Cola", "price": 3},
         {"id": "0002", "name": "Diet Coke", "price": 4},
@@ -73,7 +82,14 @@ it('should doCount', function () {
         {"id": "0010", "name": "Fanta", "price": 12}
     ];
 
-    const count = printReceipt.doCount(arr, datasource);
+    // when
+    const receipt =  printReceipt.print(arr, datasource);
 
-    expect(count).toBe(2);
+    // then
+    expect(receipt).toStrictEqual("Receipts\n" +
+        "------------------------------------------------------------\n" +
+        "Coca Cola                       3          1\n" +
+        "Diet Coke                       4          1\n" +
+        "------------------------------------------------------------\n" +
+        "Price: 7");
 });

@@ -35,16 +35,48 @@ function beFormat(name, price, count) {
     let format1 = "";
     format = "Receipts\n" + "------------------------------------------------------------\n";
     for (var k = 0; k < name.length; k++) {
-        format1 = format1 + name[k] + "                       " + price[k] + "          " + count + "\n";
+        format1 = format1 + name[k] + "                       " + price[k] + "          " + count[k] + "\n";
         sum = price[k] + sum;
     }
     format = format + format1 + "------------------------------------------------------------\n" + "Price: " + sum;
     return format
 }
 
-function doCount(arr, datasource) {
-// TODO
-    return 2;
+function doCount(arr) {
+    var map = new Map();  // 用来存储结果的键值对
+    for (let i = 0; i < arr.length; i++) {
+        if (map.has(arr[i])) {
+            var count = map.get(arr[i]);
+            map.set(arr[i], ++count);
+        }
+        else {
+            map.set(arr[i], 1);
+        }
+    }
+
+    var res = [];
+    for (var [key, value] of map) {
+        res.push({"item":key,"count":value});
+    }
+
+    //res2count
+    var count = [];
+    for (let i = 0; i < res.length; i++) {
+        count.push(res[i].count);
+    }
+
+    return count;
+}
+
+
+function print(arr, datasource) {
+    const record = getRecord(arr, datasource);
+    const name = getName(record);
+    const price = getPrice(record);
+    const count = doCount(arr);
+    const format = beFormat(name, price, count);
+
+    return format;
 }
 
 module.exports = {
@@ -53,4 +85,5 @@ module.exports = {
     getPrice:getPrice,
     beFormat:beFormat,
     doCount:doCount,
+    print:print,
 };
